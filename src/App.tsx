@@ -16,10 +16,10 @@ function App() {
 
       <nav className="c-menu">
         <Link to="/"><img src="https://www.clipartmax.com/png/middle/201-2010871_home-icon-png-home-house-icon-website-home-logo.png"/><p>Home</p></Link>
-     <Link to="/"><img src="https://www.vhv.rs/dpng/d/128-1281566_favorite-icon-png-image-free-download-searchpng-heart.png"/><p></p>Favoritos</Link>
-     <Link to="/"><img src="https://cdn-icons-png.flaticon.com/512/3712/3712144.png"/><p>Original</p></Link>
-     <Link to="/"><img src="https://cdn-icons-png.flaticon.com/512/263/263164.png"/><p>Informativa</p></Link>
-     <Link to="/"><img src="https://static.vecteezy.com/system/resources/thumbnails/019/879/186/small/user-icon-on-transparent-background-free-png.png"/><p>Usuarios</p></Link>
+     <Link to="/favoritos"><img src="https://www.vhv.rs/dpng/d/128-1281566_favorite-icon-png-image-free-download-searchpng-heart.png"/><p></p>Favoritos</Link>
+     <Link to="/original"><img src="https://cdn-icons-png.flaticon.com/512/3712/3712144.png"/><p>Original</p></Link>
+     <Link to="/informativa"><img src="https://cdn-icons-png.flaticon.com/512/263/263164.png"/><p>Informativa</p></Link>
+     <Link to="/usuarios"><img src="https://static.vecteezy.com/system/resources/thumbnails/019/879/186/small/user-icon-on-transparent-background-free-png.png"/><p>Usuarios</p></Link>
         </nav>
 
     <Routes>
