@@ -6,7 +6,7 @@ import Favoritos from "./Favoritos";
 import Original from "./Original";
 import Informativa from "./Informativa";
 import Usuarios from "./Usuarios"
-import Equipo  from "./Equipos";
+import Equipos from "./Equipos";
 
 function App() {  
   const [count, setCount] = useState(0)
@@ -29,7 +29,7 @@ function App() {
     <Route path="/original" element={<Original />} />
     <Route path="/informativa" element={<Informativa />} />
     <Route path="/usuarios" element={<Usuarios />} />
-    <Route path="/equipo" element={<Equipo />} />  
+    <Route path="/equipos/:equipos" element={<Equipos />} />  
     </>
     </Routes>  
     </Router>
