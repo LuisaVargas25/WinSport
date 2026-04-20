@@ -1,6 +1,8 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext  } from 'react'
 import { Link } from 'react-router';
+import { EquiposContext } from "../EquiposContext";
+
 
 interface Ranking {
   rank: number
@@ -48,6 +50,9 @@ const equiposMap: Record<string, string> = {
 function Home() {
   const [ranking, setRanking] = useState<Ranking[]>([])
   const [title, setTitle] = useState('')
+
+    const equiposMap = useContext(EquiposContext);
+
 
    //filtro
   const [filtro, setFiltro] = useState<FiltroTipo>('posiciones')
@@ -122,6 +127,15 @@ function Home() {
         ))}
       </div>
 
+         <input
+        type="text"
+        placeholder="Buscar..."
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+      />
+
+      
+
     <div className="tabla-container">
       <h2>{title}</h2>
       <table className="tabla-posiciones">
@@ -135,8 +149,17 @@ function Home() {
         </thead>
         <tbody>
           {ranking.map((equipos) => (
-            <tr key={equipos.rank}>
+            <tr key={equipos.rank} 
+              className={
+                busqueda.length>= 3 && 
+                equipos.contestantName.toLowerCase().includes(busqueda.toLowerCase())
+                  ? 'resaltado'
+                : ''          
+            }
+            >
+
               <td>{equipos.rank}</td>
+
               <td>
                 <Link to={` /equipos/${equiposMap [equipos.contestantName] || "default"}`}>
                 {equipos.contestantName}

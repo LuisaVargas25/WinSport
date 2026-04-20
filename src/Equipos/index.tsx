@@ -1,6 +1,5 @@
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-
 
 interface TeamData {
   team: {
@@ -28,32 +27,110 @@ interface TeamData {
   };
 }
 
-
 function Equipos() {
-    const { equipos } = useParams<{ equipos: string }>()
-    const [data, setData] = useState<TeamData | null>(null);
+  const { equipos } = useParams<{ equipos: string }>();
 
-    useEffect(() => {
-        if (!equipos) return;
-    const fetchData = async () => {
-      try {
-        const res = await fetch('https://raw.githubusercontent.com/sdtibata/dataliga/refs/heads/main/posiciones.json')
-        const data = await res.json();
+  const [data, setData] = useState<TeamData | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-        setData (data);
+  useEffect(() => {
+  if (!equipos) return;
 
-      } catch (error) {
-        console.error('Error cargando datos:', error)
-      }
+  // Revisar si ya es favorito
+  const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+  if (favorites.includes(equipos)) {
+    setIsFavorite(true);
+  }
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(
+        `https://raw.githubusercontent.com/sdtibata/dataliga/main/${equipos}.json`
+      );
+
+      const data = await res.json();
+      setData(data);
+    } catch (error) {
+      console.error("Error cargando datos:", error);
+    }
+  };
+
+  fetchData();
+}, [equipos]);
+
+  const toggleFavorite = () => {
+  if (!equipos) return;
+
+  let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+  if (favorites.includes(equipos)) {
+      favorites = favorites.filter((fav: string) => fav !== equipos);
+      setIsFavorite(false);
+    } else {
+      favorites.push(equipos);
+      setIsFavorite(true);
     }
 
-    fetchData()
-  }, [equipos])
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  };
+
+  if (!data) return <p>Cargando...</p>;
+
   return (
-    <>
-      <p>{ equipos}</p>
-    </>
-  )
+    <div>
+      <h1>{data.team.name}
+
+        <button onClick={toggleFavorite}>
+          {isFavorite ? "❤️" : "🤍"}
+        </button>
+      </h1>
+
+      <h2>Información</h2>
+      <p><strong>Ciudad:</strong> {data.team.info.city}</p>
+      <p><strong>Fundado:</strong> {data.team.info.founded}</p>
+      <p><strong>Estadio:</strong> {data.team.info.stadium}</p>
+      <p><strong>Presidente:</strong> {data.team.info.president}</p>
+      <p><strong>Último título:</strong> {data.team.info.last_title}</p>
+
+      <h2>Ranking</h2>
+      <p><strong>Posición:</strong> {data.team.ranking.position}</p>
+      <p><strong>Competencia:</strong> {data.team.ranking.competition}</p>
+
+      <h2>Redes</h2>
+      <ul>
+        <li>
+          <a href={data.team.social.facebook} target="_blank" rel="noreferrer">
+            Facebook
+          </a>
+        </li>
+        <li>
+          <a href={data.team.social.instagram} target="_blank" rel="noreferrer">
+            Instagram
+          </a>
+        </li>
+        <li>
+          <a href={data.team.social.x} target="_blank" rel="noreferrer">
+            X (Twitter)
+          </a>
+        </li>
+      </ul>
+
+      <h2>Extras</h2>
+      <ul>
+        <li>
+          <a href={data.team.links.store} target="_blank" rel="noreferrer">
+            Tienda oficial
+          </a>
+        </li>
+        <li>
+          <a href={data.team.links.tickets} target="_blank" rel="noreferrer">
+            Comprar boletas
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
 }
 
-export default Equipos
+export default Equipos;
